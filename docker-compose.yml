@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    container_name: knowledgemesh-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: knowledge_mesh
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:

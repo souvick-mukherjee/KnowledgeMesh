@@ -3,7 +3,7 @@ spring:
     name: knowledgemesh
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/knowledge_mesh
+    url: jdbc:postgresql://localhost:5433/knowledge_mesh
     username: postgres
     password: root
 

@@ -1,0 +1,8 @@
+ALTER TABLE document
+ADD COLUMN file_size BIGINT;
+
+ALTER TABLE document
+ADD COLUMN content_type VARCHAR(100);
+
+ALTER TABLE document
+ADD COLUMN status VARCHAR(30);

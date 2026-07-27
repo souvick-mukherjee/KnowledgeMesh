@@ -15,5 +15,14 @@ spring:
   flyway:
     enabled: true
 
+  ollama:
+    base-url: http://localhost:11434
+
+  embedding:
+    model: nomic-embed-text
+
+  chat:
+    model: qwen3:8b
+
 server:
   port: 8080

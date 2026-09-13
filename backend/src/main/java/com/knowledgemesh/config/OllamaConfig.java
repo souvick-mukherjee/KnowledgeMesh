@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 public class OllamaConfig {
     @Bean
     EmbeddingModel embeddingModel(
-            @Value("${ollama.base-url}") String baseUrl,
-            @Value("${embedding.model}") String modelName
+            @Value("${ai.ollama.base-url}") String baseUrl,
+            @Value("${ai.embedding.model}") String modelName
     ) {
 
         return OllamaEmbeddingModel.builder()

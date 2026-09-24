@@ -6,6 +6,7 @@ import com.knowledgemesh.document.entity.DocumentChunk;
 import com.knowledgemesh.document.entity.DocumentStatus;
 import com.knowledgemesh.document.repository.DocumentChunkRepository;
 import com.knowledgemesh.document.repository.DocumentRepository;
+import com.knowledgemesh.embedding.service.EmbeddingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class DocumentProcessor {
     private final ChunkingService chunkingService;
     private final DocumentRepository documentRepository;
     private final DocumentChunkRepository chunkRepository;
+    private final EmbeddingService embeddingService;
 
 
     public UploadDocumentResponse process(
@@ -114,11 +116,16 @@ public class DocumentProcessor {
     private void saveChunks(Document document, List<String> chunks) {
         List<DocumentChunk> chunkEntities = new ArrayList<>();
         for (int i = 0; i < chunks.size(); i++) {
+            String content = chunks.get(i);
+            log.debug("Generating embedding for chunk {}", i);
+            float[] embedding =
+                    embeddingService.generateEmbedding(content);
             chunkEntities.add(
                     DocumentChunk.builder()
                             .document(document)
                             .chunkIndex(i)
-                            .content(chunks.get(i))
+                            .content(content)
+                            .embedding(embedding)
                             .build()
             );
         }

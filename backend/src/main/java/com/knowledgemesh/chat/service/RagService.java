@@ -1,5 +1,7 @@
 package com.knowledgemesh.chat.service;
 
+import com.knowledgemesh.chat.dto.RagResponse;
+import com.knowledgemesh.chat.dto.RagSource;
 import com.knowledgemesh.llm.service.LlmService;
 import com.knowledgemesh.retrieval.model.SearchResult;
 import com.knowledgemesh.retrieval.service.ContextBuilder;
@@ -16,7 +18,7 @@ public class RagService {
     private final ContextBuilder contextBuilder;
     private final LlmService llmService;
 
-    public String answer(String question) {
+    public RagResponse answer(String question) {
         // 1. Retrieve relevant chunks
         List<SearchResult> results =
                 searchService.search(question, 5);
@@ -29,7 +31,16 @@ public class RagService {
         String prompt = buildPrompt(question, context);
 
         // 4. Ask the LLM
-        return llmService.generate(prompt);
+        String answer = llmService.generate(prompt);
+
+        List<RagSource> sources = results.stream()
+                .map(result -> new RagSource(
+                        result.documentId(),
+                        result.chunkIndex(),
+                        result.similarity()
+                ))
+                .toList();
+        return new RagResponse(answer, sources);
     }
 
     private String buildPrompt(String question, String context) {
